@@ -162,6 +162,7 @@ $properties = $stmt->fetchAll();
                         <label class="form-label">Description</label>
                         <textarea class="form-control" name="description" rows="3" required></textarea>
                     </div>
+                    <input type="hidden" name="save_property" value="1">
                 </form>
             </div>
             <div class="modal-footer">
@@ -174,23 +175,48 @@ $properties = $stmt->fetchAll();
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+function saveProperty() {
+    const form = document.getElementById('addPropertyForm');
+    const formData = new FormData(form);
+    formData.append('save_property', '1');
+
+    // Show loading state
+    const saveButton = document.querySelector('[onclick="saveProperty()"]');
+    const originalText = saveButton.innerHTML;
+    saveButton.disabled = true;
+    saveButton.innerHTML = 'Saving...';
+
+    fetch('save_property.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Property saved successfully!');
+            window.location.reload();
+        } else {
+            alert('Error: ' + (data.message || 'Failed to save property'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to save property');
+    })
+    .finally(() => {
+        // Reset button state
+        saveButton.disabled = false;
+        saveButton.innerHTML = originalText;
+        // Close modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('addPropertyModal'));
+        modal.hide();
+    });
+}
+
 function editProperty(id) {
     // Implement edit property functionality
     alert('Edit property ' + id);
 }
-
-function deleteProperty(id) {
-    if (confirm('Are you sure you want to delete this property?')) {
-        // Implement delete property functionality
-        alert('Delete property ' + id);
-    }
-}
-
-function saveProperty() {
-    // Implement save property functionality
-    alert('Save property');
-    $('#addPropertyModal').modal('hide');
-}
 </script>
 </body>
-</html> 
+</html>

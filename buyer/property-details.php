@@ -181,14 +181,7 @@ if (isset($_POST['toggle_favorite'])) {
     <script>
     document.getElementById('inquiryForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        
         const formData = new FormData(this);
-        const submitButton = this.querySelector('button[type="submit"]');
-        const originalText = submitButton.innerHTML;
-        
-        // Show loading state
-        submitButton.disabled = true;
-        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
 
         fetch('send_inquiry.php', {
             method: 'POST',
@@ -197,38 +190,18 @@ if (isset($_POST['toggle_favorite'])) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: data.message
-                }).then(() => {
-                    // Clear form
-                    this.reset();
-                    // Pre-fill the message for next inquiry
-                    document.getElementById('message').value = 'I\'m interested in <?php echo addslashes(htmlspecialchars($property['title'])); ?>';
-                });
+                alert('Message sent successfully!');
+                this.reset();
+                document.getElementById('message').value = 'I\'m interested in <?php echo addslashes(htmlspecialchars($property['title'])); ?>';
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: data.message
-                });
+                alert(data.message || 'Failed to send message');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'An error occurred while sending your message. Please try again.'
-            });
-        })
-        .finally(() => {
-            // Reset button state
-            submitButton.disabled = false;
-            submitButton.innerHTML = originalText;
+            alert('Failed to send message');
         });
     });
     </script>
 </body>
-</html> 
+</html>

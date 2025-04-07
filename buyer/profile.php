@@ -159,6 +159,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-white" href="inquiries.php">
+                                <i class="fas fa-comments me-2"></i> Messages
+                                <?php
+                                // Count unread messages
+                                $stmt = $pdo->prepare("
+                                    SELECT COUNT(*) as count 
+                                    FROM inquiries i 
+                                    WHERE i.user_id = ? AND i.status = 'replied'
+                                ");
+                                $stmt->execute([$_SESSION['user_id']]);
+                                $unread = $stmt->fetch();
+                                if ($unread['count'] > 0): ?>
+                                    <span class="badge bg-danger rounded-pill ms-2"><?php echo $unread['count']; ?></span>
+                                <?php endif; ?>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link active text-white" href="profile.php">
                                 <i class="fas fa-user me-2"></i> Profile
                             </a>
@@ -249,4 +266,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         })()
     </script>
 </body>
-</html> 
+</html>
