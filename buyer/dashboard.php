@@ -199,10 +199,10 @@ $viewed_count = 0;
                             <div class="col-md-3">
                                 <select class="form-select">
                                     <option value="">Price Range</option>
-                                    <option value="0-100000">$0 - $100,000</option>
-                                    <option value="100000-200000">$100,000 - $200,000</option>
-                                    <option value="200000-500000">$200,000 - $500,000</option>
-                                    <option value="500000+">$500,000+</option>
+                                    <option value="0-100000">₱0 - ₱100,000</option>
+                                    <option value="100000-200000">₱100,000 - ₱200,000</option>
+                                    <option value="200000-500000">₱200,000 - ₱500,000</option>
+                                    <option value="500000+">₱500,000+</option>
                                 </select>
                             </div>
                             <div class="col-md-2">
